@@ -1,0 +1,65 @@
+<div style="max-width: 100%; position: relative;">
+    <div class="prueba">
+        hola mundo
+    </div>
+    <div>
+        <div>
+            <p>&nbsp;</p>
+            <mat-form-field appearance="outline">
+              <mat-label>Filter:</mat-label>
+              <mat-select [(ngModel)]="navigatorFilter" (selectionChange)="changeFilter(navigatorContent)">
+                <mat-option [value]="1">Suggested</mat-option>
+                <mat-option [value]="2">Progress</mat-option>
+                <mat-option [value]="3">Collaborations</mat-option>
+                <mat-option [value]="4">All</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <span class="spacer"></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+        <button (click)="navigateLeft(navigatorContent)" mat-icon-button color="primary" aria-label="Navigate to left">
+          <mat-icon>arrow_back_ios</mat-icon>
+        </button>
+        <button (click)="navigateRight(navigatorContent)" mat-icon-button color="primary" aria-label="Navigate to right">
+          <mat-icon>arrow_forward_ios</mat-icon>
+        </button>
+    </div>
+    <div fxLayout="row" #navigatorContent class="suggested" style="max-width: 100%; overflow-x: scroll; padding-bottom: 1rem; scroll-behavior: smooth;" fxLayoutAlign="space-between start" fxLayoutGap="10px" fxLayoutGap.xs="0px">
+        <div *ngFor="let dimension of dimensions">
+        <div class="nav-dimension">
+            <div class="tableHeader">
+                <h3 style="padding: 20px !important; text-align: center;" mat-line>{{dimension.name}}</h3>
+            </div>                
+            <div style="width: auto !important; max-width:500px !important;">
+            <mat-accordion multi="true">
+                <mat-expansion-panel *ngFor="let category of getCategoriesByDimension(dimension.dimensionCatalogId)" class="panelCategories" [expanded]="category.expanded" [ngClass]="hasSelectedObjective(category) ? 'highlight-cat': ''">
+                <mat-expansion-panel-header [ngClass]="!category.expanded && navigatorFilter==1 ? 'not-highlighted' : ''"
+                class="objective">
+                    <mat-panel-title >
+                    {{category.name}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div>
+                    <mat-card class="mat-card-objective-category" [ngClass]="objective.class" *ngFor="let objective of getObjectiveByCategory(category.categoryCatalogId)">
+                        <mat-card-title-group>
+                            <mat-card-title class="mat-card-objective-category-detail">{{objective.name}}</mat-card-title>
+                        </mat-card-title-group>
+                        <div>
+                            <mat-divider></mat-divider>
+                        </div>
+                        <mat-card-actions class="mat-card-objective-category-detail" fxLayout="row" fxLayoutGap="10px">
+                            <span class="navigator-maturity" >{{objective.maturityScore}}</span>{{objective.date | date: 'mediumDate' }}
+                            <span class="xchange-spacer"></span>
+                            <!--<mat-icon class="material-symbols-outlined" >attach_file</mat-icon>1-->
+                            <button mat-button *ngIf="isOwner" (click)="addObjective(category.categoryCatalogId, objective)">{{objective.class.includes('has') ? 'View': 'Add'}}</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

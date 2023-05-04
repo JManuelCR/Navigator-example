@@ -1,0 +1,7 @@
+<h1 mat-dialog-title align="center">{{selectedCatalogObjective?.name}}</h1>
+<div mat-dialog-content style="min-height: 60vh;">
+    <app-objective-detail [selectedProjectId]="data.projectId" [selectedCatalogObjective]="selectedCatalogObjective" (onUpdateObjective)="close()" [navigatorView]="true" [projectView]="true" [isOwner]="true" [objectiveId]="objectiveId" [selectedCategoryId]="selectedCategoryId" [selectedObjective]="selectedObjective"></app-objective-detail>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>
